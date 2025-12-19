@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather checker</title>
+</head>
+<link rel="stylesheet" href="./weather.css">
+
+<body>
+    <div id="fullbody">
+        <div id="wc">
+            <h2 id="heading">Weather App</h2>
+        </div>
+        <div id="form">
+            <label for="" style=>Enter location:</label>
+
+            <input type="text" name="" id="inp" style="outline: none;">
+
+            <button id="ser" onclick="func()">search</button>
+            <p id="dis"></p>
+            <!-- <img src="./image/img1.jpg" alt=""> -->
+        </div>
+    </div>
+</body>
+<script>
+
+    var userip = document.getElementById("inp");
+    Object.assign(userip.style, {
+        height: "20px",
+        width: "150px",
+        borderRadius: "20px",
+        border: "none",
+    })
+    var dis = document.getElementById("dis");
+    var ser = document.getElementById("ser");
+    Object.assign(ser.style, {
+        color: "white",
+        height: "30px",
+        width: "80px",
+        borderRadius: "10px",
+        border: "none",
+        backgroundColor: "rgb(47, 143, 208)",
+        cursor: "pointer"
+    });
+
+    async function func() {
+        var userip = document.getElementById("inp").value;
+
+        var dis = document.getElementById("dis");
+        Object.assign(dis.style, {
+            height: "100px",
+            width: "350px",
+            // background: " rgba(155, 163, 163, 0.208)",
+            marginTop: "10px",
+            color: "white",
+            textAlign: "center",
+            padding: "20px",
+            color: "black"
+        })
+
+        try {
+            var apikey = "37749704291a4981a63102355252408";
+            var url = `https://api.weatherapi.com/v1/current.json?key=${apikey}&q=${userip}`;
+            var response = await fetch(url)
+            var data = await response.json()
+            var Temperature = data.current.temp_c;
+            dis.innerText = `🌍${data.location.name},${data.location.region},${data.location.country}
+                            🌡️ Temperature: ${data.current.temp_c} °C
+                             💧Humidity:${data.current.humidity}%,
+                             💨Wind:${data.current.wind_degree}%`
+            console.log(data)
+        }
+        catch (error) {
+            dis.innerText = `error`;
+            console.log("error")
+        }
+        if (Temperature > 10 && Temperature <= 12) {
+            var fullbody = document.getElementById("fullbody");
+            Object.assign(fullbody.style, {
+                backgroundImage: "url(../image/stormy.webp)",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
+                backgroundSize: "cover"
+            });
+        }
+        else if (Temperature > 12 && Temperature <= 15) {
+            var fullbody = document.getElementById("fullbody");
+
+            Object.assign(fullbody.style, {
+                backgroundImage: "url(../image/cloudy.webp)",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
+                backgroundSize: "cover",
+
+            })
+        }
+        else if (Temperature > 15 && Temperature <= 40) {
+            var fullbody = document.getElementById("fullbody");
+
+            Object.assign(fullbody.style, {
+
+                backgroundImage: "url(../image/suuny.png)",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
+                backgroundSize: " cover"
+            })
+        }
+    }
+
+
+</script>
+
+</html>
